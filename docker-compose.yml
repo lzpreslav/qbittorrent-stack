@@ -1,0 +1,37 @@
+---
+version: "3.9"
+
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:${QBITTORRENT_TAG:-4.4.1}
+    deploy:
+      resources:
+        limits:
+          memory: ${QBITTORRENT_MEMORY_LIMITS:-1G}
+        reservations:
+          memory: ${QBITTORRENT_MEMORY_REQUESTS:-500M}
+    environment:
+      PGID: ${PGID:-1000}
+      PUID: ${PUID:-1000}
+      TZ: ${TZ:-Etc/UTC}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.qbittorrent.entrypoints: websecure
+      traefik.http.routers.qbittorrent.middlewares: ${TRAEFIK_MIDDLEWARES:-}
+      traefik.http.routers.qbittorrent.rule: Host(`${QBITTORRENT_HOSTNAME:-localhost}`)
+      traefik.http.routers.qbittorrent.service: qbittorrent
+      traefik.http.routers.qbittorrent.tls: true
+      traefik.http.services.qbittorrent.loadbalancer.server.port: 8080
+    networks:
+      - traefik
+    restart: unless-stopped
+    volumes:
+      - ${CONFIG_VOLUME:-config}:/config/qBittorrent
+      - ${DOWNLOADS_VOLUME:-downloads}:/downloads
+networks:
+  traefik:
+    external: true
+    name: traefik
+volumes:
+  config:
+  downloads:
