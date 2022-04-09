@@ -11,6 +11,8 @@ services:
         reservations:
           memory: ${QBITTORRENT_MEMORY_REQUESTS:-500M}
     environment:
+      DOCKER_MODS: ${DOCKER_MODS:-linuxserver/mods:universal-stdout-logs}
+      LOGS_TO_STDOUT: ${LOGS_TO_STDOUT:-/config/qBittorrent/logs/qbittorrent.log}
       PGID: ${PGID:-1000}
       PUID: ${PUID:-1000}
       TZ: ${TZ:-Etc/UTC}
