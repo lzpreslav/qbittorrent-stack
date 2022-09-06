@@ -3,7 +3,7 @@ version: "3.9"
 
 services:
   qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:${QBITTORRENT_TAG:-4.4.2}
+    image: lscr.io/linuxserver/qbittorrent:${QBITTORRENT_TAG:-4.4.5}
     deploy:
       resources:
         limits:
